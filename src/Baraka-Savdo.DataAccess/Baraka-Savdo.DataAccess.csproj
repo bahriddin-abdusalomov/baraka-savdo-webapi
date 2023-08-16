@@ -9,7 +9,10 @@
 
   <ItemGroup>
     <Folder Include="Repositories\Cotegories\" />
-    <Folder Include="ViewModels\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Baraka-Savdo.Domain\Baraka-Savdo.Domain.csproj" />
   </ItemGroup>
 
 </Project>

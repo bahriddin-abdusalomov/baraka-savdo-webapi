@@ -1,4 +1,6 @@
 ﻿using Baraka_Savdo.DataAccess.Common.Interfaces;
+using Baraka_Savdo.DataAccess.ViewModels.Products;
+using Baraka_Savdo.Domain.Entities.Products;
 using System;
 using System.Collections.Generic;
 using System.Linq;

@@ -1,4 +1,5 @@
 ﻿using Baraka_Savdo.DataAccess.Common.Interfaces;
+using Baraka_Savdo.Domain.Entities.Discounts;
 using System;
 using System.Collections.Generic;
 using System.Linq;

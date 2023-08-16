@@ -14,4 +14,8 @@
     <Folder Include="Services\" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\Baraka-Savdo.DataAccess\Baraka-Savdo.DataAccess.csproj" />
+  </ItemGroup>
+
 </Project>

@@ -23,4 +23,8 @@
     </PackageReference>
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\..\src\Baraka-Savdo.WebApi\Baraka-Savdo.WebApi.csproj" />
+  </ItemGroup>
+
 </Project>
