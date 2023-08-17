@@ -14,9 +14,13 @@
 
   <ItemGroup>
     <Folder Include="Configurations\" />
-    <Folder Include="Controllers\" />
     <Folder Include="Filters\" />
     <Folder Include="Middlewares\" />
+    <Folder Include="wwwroot\media\images\" />
+    <Folder Include="wwwroot\media\documents\" />
+    <Folder Include="wwwroot\media\audios\" />
+    <Folder Include="wwwroot\media\avatars\" />
+    <Folder Include="wwwroot\media\videos\" />
   </ItemGroup>
 
   <ItemGroup>

@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace Baraka_Savdo.DataAccess.Interfaces.Categories
 {
-    public interface ICotegoryRepository : IRepository<Category, Category>, IGetAll<Category>
+    public interface ICategoryRepository : IRepository<Category, Category>, IGetAll<Category>
     {
     }
 }

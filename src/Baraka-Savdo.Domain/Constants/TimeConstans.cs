@@ -6,7 +6,8 @@ using System.Threading.Tasks;
 
 namespace Baraka_Savdo.Domain.Constants
 {
-    internal class TimeConstans
+    public class TimeConstans
     {
+        public const int UTC = 5;
     }
 }
