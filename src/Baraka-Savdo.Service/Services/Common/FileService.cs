@@ -16,19 +16,33 @@ namespace Baraka_Savdo.Service.Services.Common
         {
             this.ROOTPATH = env.WebRootPath;
         }
-        public Task<string> DeleteAvatarAsync(string file)
+        public Task<bool> DeleteAvatarAsync(string file)
         {
             throw new NotImplementedException();
         }
 
-        public Task<string> DeleteImageAsync(string file)
+        public async Task<bool> DeleteImageAsync(string imagePath)
         {
-            throw new NotImplementedException();
+            string path = Path.Combine(ROOTPATH, imagePath);
+
+            if(File.Exists(path))
+            {
+               await  Task.Run(() =>
+                    {
+                        File.Delete(path);
+                    });
+               return true;
+            }
+            else
+            {
+               return false;
+            }
+
         }
 
-        public async Task<string> UploadAvatarAsync(IFormFile file)
+        public Task<string> UploadAvatarAsync(IFormFile file)
         {
-            return " sa";
+            throw new NotImplementedException();
         }
 
         public async Task<string> UploadImageAsync(IFormFile file)

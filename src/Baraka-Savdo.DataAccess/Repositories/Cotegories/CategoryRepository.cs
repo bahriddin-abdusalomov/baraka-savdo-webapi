@@ -13,9 +13,24 @@ namespace Baraka_Savdo.DataAccess.Repositories.Cotegories
 {
     public class CategoryRepository : BaseRepository, ICategoryRepository
     {
-        public Task<long> CountAsync()
+        public async Task<long> CountAsync()
         {
-            throw new NotImplementedException();
+            try
+            {
+                await _connection.OpenAsync();
+                string query = "Select count(*) From categories";
+                var result = await _connection.QuerySingleAsync<long>(query);
+                return result; 
+            }
+            catch 
+            {
+                return 0;
+            }
+            finally 
+            { 
+                await  _connection.CloseAsync();
+            }
+
         }
 
         public async Task<int> CreateAsync(Category entity)
@@ -84,9 +99,24 @@ namespace Baraka_Savdo.DataAccess.Repositories.Cotegories
             }
         }
 
-        public Task<Category?> GetByIdAsync(long id)
+        public async Task<Category?> GetByIdAsync(long id)
         {
-            throw new NotImplementedException();
+            try
+            {
+                await _connection.OpenAsync();
+                string query = "Select * From categories Where id = @Id";
+                var result = await  _connection.QuerySingleAsync<Category>(query, new {Id = id});
+                return result;
+            }
+            catch
+            {
+                return null;
+            }
+            finally
+            {
+              await  _connection.CloseAsync();
+            }
+
         }
 
         public Task<int> UpdateAsync(long id, Category entity)

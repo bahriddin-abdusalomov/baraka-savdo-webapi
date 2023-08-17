@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Baraka_Savdo.Domain.Exceptions.Categories
 {
-    internal class CategoryNotFoundException : NotFoundException
+    public class CategoryNotFoundException : NotFoundException
     {
         public CategoryNotFoundException() 
         {

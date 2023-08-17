@@ -1,6 +1,8 @@
 ﻿using Baraka_Savdo.DataAccess.Interfaces.Categories;
 using Baraka_Savdo.DataAccess.Utils;
 using Baraka_Savdo.Domain.Entities.Categories;
+using Baraka_Savdo.Domain.Exceptions.Categories;
+using Baraka_Savdo.Domain.Exceptions.Files;
 using Baraka_Savdo.Service.Common.Helpers;
 using Baraka_Savdo.Service.Dtos.Categories;
 using Baraka_Savdo.Service.Interfaces.Categories;
@@ -25,12 +27,12 @@ namespace Baraka_Savdo.Service.Services.Catecories
         }
         public Task<long> CountAsync()
         {
-            throw new NotImplementedException();
+            return _repository.CountAsync();
         }
 
         public async Task<bool> CreateAsync(CategoryCreateDto dto)
         {
-            string imagePath = await _fileService.UploadAvatarAsync(dto.ImagePath);
+            string imagePath = await _fileService.UploadImageAsync(dto.ImagePath);
             Category category = new Category()
             {
                 ImagePath = imagePath,
@@ -46,9 +48,16 @@ namespace Baraka_Savdo.Service.Services.Catecories
 
         }
 
-        public Task<bool> DeleteAsync(long categoryId)
+        public async Task<bool> DeleteAsync(long categoryId)
         {
-            throw new NotImplementedException();
+            var category =  await _repository.GetByIdAsync(categoryId);
+            if (category == null) throw new CategoryNotFoundException();
+
+            var categoryImage = await _fileService.DeleteImageAsync(category.ImagePath);
+            if (categoryImage == false) throw new ImageNotFoundException();
+
+            var result = await _repository.DeleteAsync(categoryId);
+            return result > 0;
         }
 
         public Task<IList<Category>> GetAllAsync(PaginationParams @params)
@@ -56,7 +65,7 @@ namespace Baraka_Savdo.Service.Services.Catecories
             throw new NotImplementedException();
         }
 
-        public Task<Category> GetByIdAsync(long categoryId)
+        public Task<Category> GetByIdAsync(long categoryId) 
         {
             throw new NotImplementedException();
         }

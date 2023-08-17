@@ -16,8 +16,18 @@ namespace Baraka_Savdo.WebApi.Controllers
         {
             this._service = service;
         }
+
         [HttpPost]
-        public async Task<ActionResult> CreateAsync([FromForm] CategoryCreateDto category) =>   Ok(await _service.CreateAsync(category));
+        public async Task<ActionResult> CreateAsync([FromForm] CategoryCreateDto category) => 
+            Ok(await _service.CreateAsync(category));
+
+        [HttpDelete]
+        public async Task<ActionResult> DeleteAsync(long categoryId) =>
+            Ok(await _service.DeleteAsync(categoryId));
+
+        [HttpGet]
+        public async Task<IActionResult> CountAsync() => 
+            Ok(await _service.CountAsync());
         
     }
 }
