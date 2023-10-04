@@ -2,11 +2,6 @@
 using Baraka_Savdo.DataAccess.Utils;
 using Baraka_Savdo.Domain.Entities.Categories;
 using Dapper;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using static Dapper.SqlMapper;
 
 namespace Baraka_Savdo.DataAccess.Repositories.Cotegories
@@ -20,15 +15,15 @@ namespace Baraka_Savdo.DataAccess.Repositories.Cotegories
                 await _connection.OpenAsync();
                 string query = "Select count(*) From categories";
                 var result = await _connection.QuerySingleAsync<long>(query);
-                return result; 
+                return result;
             }
-            catch 
+            catch
             {
                 return 0;
             }
-            finally 
-            { 
-                await  _connection.CloseAsync();
+            finally
+            {
+                await _connection.CloseAsync();
             }
 
         }
@@ -41,7 +36,7 @@ namespace Baraka_Savdo.DataAccess.Repositories.Cotegories
 
                 string query = "INSERT INTO public.categories(name, description, image_path, created_at, updated_at)" +
                     " VALUES (@Name, @Description, @ImagePath, @CreatedAt, @UpdatedAt);";
-                var result  = await _connection.ExecuteAsync(query, entity);
+                var result = await _connection.ExecuteAsync(query, entity);
                 return result;
 
             }
@@ -49,9 +44,9 @@ namespace Baraka_Savdo.DataAccess.Repositories.Cotegories
             {
                 return 0;
             }
-            finally 
-            { 
-               await _connection.CloseAsync();
+            finally
+            {
+                await _connection.CloseAsync();
             }
         }
 
@@ -62,7 +57,7 @@ namespace Baraka_Savdo.DataAccess.Repositories.Cotegories
                 await _connection.OpenAsync();
 
                 string query = "Delete From categories Where id = @Id";
-                var result = await _connection.ExecuteAsync(query, new {Id = id});
+                var result = await _connection.ExecuteAsync(query, new { Id = id });
                 return result;
 
             }
@@ -84,7 +79,7 @@ namespace Baraka_Savdo.DataAccess.Repositories.Cotegories
 
                 string query = $"Select * From categories order by id desc  " +
                     $"offset {@params.GetSkipCount()} limit {@params.PageSize} ";
-                 
+
                 var result = (await _connection.QueryAsync<Category>(query)).ToList();
                 return result;
 
@@ -105,7 +100,7 @@ namespace Baraka_Savdo.DataAccess.Repositories.Cotegories
             {
                 await _connection.OpenAsync();
                 string query = "Select * From categories Where id = @Id";
-                var result = await  _connection.QuerySingleAsync<Category>(query, new {Id = id});
+                var result = await _connection.QuerySingleAsync<Category>(query, new { Id = id });
                 return result;
             }
             catch
@@ -114,14 +109,32 @@ namespace Baraka_Savdo.DataAccess.Repositories.Cotegories
             }
             finally
             {
-              await  _connection.CloseAsync();
+                await _connection.CloseAsync();
             }
 
         }
 
-        public Task<int> UpdateAsync(long id, Category entity)
+        public async Task<int> UpdateAsync(long id, Category entity)
         {
-            throw new NotImplementedException();
+            try
+            {
+                await _connection.OpenAsync();
+                string query = $"UPDATE public.categories " +
+                    $"SET name=@Name, description=@Description, image_path=@ImagePath, created_at=@CreatedAt, updated_at=@UpdatedAt " +
+                    $"WHERE id={id};";
+
+                var result = await _connection.ExecuteAsync(query, entity);
+                return result;
+            }
+            catch
+            {
+                return 0;
+            }
+            finally
+            {
+                await _connection.CloseAsync();
+            }
+
         }
     }
 }
