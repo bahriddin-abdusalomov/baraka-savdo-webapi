@@ -7,56 +7,56 @@ namespace Baraka_Savdo.Service.Services.Common
 {
     public class FileService : IFileService
     {
-        private readonly string MEDIA = "media";
-        private readonly string IMAGES = "images";
-        private readonly string AVATARS = "avatars";
-        private readonly string ROOTPATH;
+            private readonly string MEDIA = "media";
+            private readonly string IMAGES = "images";
+            private readonly string AVATARS = "avatars";
+            private readonly string ROOTPATH;
 
-        public FileService(IWebHostEnvironment env)
-        {
-            this.ROOTPATH = env.WebRootPath;
-        }
-        public Task<bool> DeleteAvatarAsync(string file)
-        {
-            throw new NotImplementedException();
-        }
-
-        public async Task<bool> DeleteImageAsync(string imagePath)
-        {
-            string path = Path.Combine(ROOTPATH, imagePath);
-
-            if(File.Exists(path))
+            public FileService(IWebHostEnvironment env)
             {
-               await  Task.Run(() =>
-                    {
-                        File.Delete(path);
-                    });
-               return true;
+                this.ROOTPATH = env.WebRootPath;
             }
-            else
+            public Task<bool> DeleteAvatarAsync(string file)
             {
-               return false;
+                throw new NotImplementedException();
             }
 
-        }
+            public async Task<bool> DeleteImageAsync(string imagePath)
+            {
+                string path = Path.Combine(ROOTPATH, imagePath);
 
-        public Task<string> UploadAvatarAsync(IFormFile file)
-        {
-            throw new NotImplementedException();
-        }
+                if(File.Exists(path))
+                {
+                   await  Task.Run(() =>
+                        {
+                            File.Delete(path);
+                        });
+                   return true;
+                }
+                else
+                {
+                   return false;
+                }
 
-        public async Task<string> UploadImageAsync(IFormFile file)
-        {
-            string newImageName = MediaHelper.MakeImageName(file.FileName);
-            string subPath = Path.Combine(MEDIA, IMAGES, newImageName);
+            }
 
-            string path = Path.Combine(ROOTPATH, subPath);
+            public Task<string> UploadAvatarAsync(IFormFile file)
+            {
+                throw new NotImplementedException();
+            }
 
-            FileStream fileStream = new FileStream(path, FileMode.Create);
-            await file.CopyToAsync(fileStream);
-            fileStream.Close();
+            public async Task<string> UploadImageAsync(IFormFile file)
+            {
+                string newImageName = MediaHelper.MakeImageName(file.FileName);
+                string subPath = Path.Combine(MEDIA, IMAGES, newImageName);
 
-            return subPath;
-        }
+                string path = Path.Combine(ROOTPATH, subPath);
+
+                FileStream fileStream = new FileStream(path, FileMode.Create);
+                await file.CopyToAsync(fileStream);
+                fileStream.Close();
+
+                return subPath;
+            }
     }
 }
