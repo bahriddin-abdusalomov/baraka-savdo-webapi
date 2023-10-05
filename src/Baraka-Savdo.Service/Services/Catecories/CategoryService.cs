@@ -60,19 +60,48 @@ namespace Baraka_Savdo.Service.Services.Catecories
             return result > 0;
         }
 
-        public Task<IList<Category>> GetAllAsync(PaginationParams @params)
+        public async Task<IList<Category>> GetAllAsync(PaginationParams @params)
         {
-            throw new NotImplementedException();
+            var result = await _repository.GetAllAsync(@params);
+            return result;
         }
 
-        public Task<Category> GetByIdAsync(long categoryId) 
+        public async Task<Category> GetByIdAsync(long categoryId) 
         {
-            throw new NotImplementedException();
+            var category = await _repository.GetByIdAsync(categoryId);
+
+            if (category == null) throw new CategoryNotFoundException();
+            else return category;
         }
 
-        public Task<bool> UpdateAsync(long categoryId, CategoryUpdateDto dto)
+        public async Task<bool> UpdateAsync(long categoryId, CategoryUpdateDto dto)
         {
-            throw new NotImplementedException();
+            var category = await _repository.GetByIdAsync(categoryId);
+            if (category is null) throw new CategoryNotFoundException();
+
+            // parse new items to category
+            category.Name = dto.Name;
+            category.Description = dto.Description;
+
+            if (dto.Image is not null)
+            {
+                // delete old image
+                var deleteResult = await _fileService.DeleteImageAsync(category.ImagePath);
+                if (deleteResult is false) throw new ImageNotFoundException();
+
+                // upload new image
+                string newImagePath = await _fileService.UploadImageAsync(dto.Image);
+
+                // parse new path to category
+                category.ImagePath = newImagePath;
+            }
+            // else category old image have to save
+
+            category.UpdatedAt = TimeHelper.GetDateTime();
+
+            var dbResult = await _repository.UpdateAsync(categoryId, category);
+            return dbResult > 0;
+
         }
     }
 }
