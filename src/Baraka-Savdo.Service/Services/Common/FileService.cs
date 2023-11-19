@@ -1,7 +1,7 @@
 ﻿using Baraka_Savdo.Service.Interfaces.Common;
 using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Hosting;
 using Baraka_Savdo.Service.Common.Helpers;
+using Microsoft.AspNetCore.Hosting;
 
 namespace Baraka_Savdo.Service.Services.Common
 {
