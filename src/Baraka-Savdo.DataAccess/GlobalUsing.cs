@@ -1,1 +1,15 @@
-﻿
+﻿global using Baraka_Savdo.DataAccess.Utils;
+global using Baraka_Savdo.DataAccess.Common.Interfaces;
+global using Baraka_Savdo.Domain.Entities.Categories;
+global using Baraka_Savdo.Domain.Entities.Companies;
+global using Baraka_Savdo.DataAccess.ViewModels.Deliveries;
+global using Baraka_Savdo.Domain.Entities.Deliveries;
+global using Baraka_Savdo.DataAccess.ViewModels.Products;
+global using Baraka_Savdo.Domain.Entities.Products;
+global using Baraka_Savdo.DataAccess.ViewModels.Users;
+global using Baraka_Savdo.Domain.Entities.Users;
+global using Baraka_Savdo.Domain.Entities.Discounts;
+global using Baraka_Savdo.DataAccess.Interfaces.Categories;
+global using Dapper;
+global using static Dapper.SqlMapper;
+global using Npgsql;
