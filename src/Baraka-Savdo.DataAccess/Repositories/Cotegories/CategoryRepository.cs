@@ -17,7 +17,7 @@ namespace Baraka_Savdo.DataAccess.Repositories.Cotegories
                 var result = await _connection.QuerySingleAsync<long>(query);
                 return result;
             }
-            catch
+            catch   
             {
                 return 0;
             }
@@ -85,7 +85,7 @@ namespace Baraka_Savdo.DataAccess.Repositories.Cotegories
 
             }
             catch
-            {
+            {   
                 return new List<Category>();
             }
             finally
