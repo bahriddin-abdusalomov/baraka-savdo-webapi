@@ -1,20 +1,12 @@
-﻿using Npgsql;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿namespace Baraka_Savdo.DataAccess.Repositories;
 
-namespace Baraka_Savdo.DataAccess.Repositories
+public class BaseRepository
 {
-    public class BaseRepository
-    {
-        protected readonly NpgsqlConnection _connection;
-        public BaseRepository() 
-        { 
-            Dapper.DefaultTypeMap.MatchNamesWithUnderscores = true;
-            this._connection = new NpgsqlConnection("server = localhost; port = 5432; " +
-                "user id = postgres; password = salom; database = baraka-savdo-db;");
-        }
+    protected readonly NpgsqlConnection _connection;
+    public BaseRepository() 
+    { 
+        Dapper.DefaultTypeMap.MatchNamesWithUnderscores = true;
+        this._connection = new NpgsqlConnection("server = localhost; port = 5432; " +
+            "user id = postgres; password = salom; database = baraka-savdo-db;");
     }
 }
