@@ -7,11 +7,6 @@ using Baraka_Savdo.Service.Common.Helpers;
 using Baraka_Savdo.Service.Dtos.Categories;
 using Baraka_Savdo.Service.Interfaces.Categories;
 using Baraka_Savdo.Service.Interfaces.Common;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Baraka_Savdo.Service.Services.Catecories
 {
@@ -22,8 +17,8 @@ namespace Baraka_Savdo.Service.Services.Catecories
 
         public CategoryService( ICategoryRepository categoryRepository,  IFileService fileService)
         {
-            this._repository = categoryRepository;
-            this._fileService = fileService;
+            _repository = categoryRepository;
+            _fileService = fileService;
         }
         public Task<long> CountAsync()
         {
