@@ -14,11 +14,16 @@ namespace Baraka_Savdo.Service.Services.Catecories
     {
         private readonly ICategoryRepository _repository;
         private readonly IFileService _fileService;
+        private readonly IPaginator _paginator;
 
-        public CategoryService( ICategoryRepository categoryRepository,  IFileService fileService)
+        public CategoryService(
+            ICategoryRepository categoryRepository,
+            IFileService fileService, 
+            IPaginator paginator)
         {
             _repository = categoryRepository;
             _fileService = fileService;
+            _paginator = paginator;
         }
         public Task<long> CountAsync()
         {
@@ -39,8 +44,6 @@ namespace Baraka_Savdo.Service.Services.Catecories
 
             var result = await _repository.CreateAsync(category);
             return result > 0;
-
-
         }
 
         public async Task<bool> DeleteAsync(long categoryId)
@@ -57,8 +60,10 @@ namespace Baraka_Savdo.Service.Services.Catecories
 
         public async Task<IList<Category>> GetAllAsync(PaginationParams @params)
         {
-            var result = await _repository.GetAllAsync(@params);
-            return result;
+            var categories = await _repository.GetAllAsync(@params);
+            var count = await _repository.CountAsync();
+            _paginator.Paginate(count, @params);
+            return categories;
         }
 
         public async Task<Category> GetByIdAsync(long categoryId) 
@@ -74,23 +79,18 @@ namespace Baraka_Savdo.Service.Services.Catecories
             var category = await _repository.GetByIdAsync(categoryId);
             if (category is null) throw new CategoryNotFoundException();
 
-            // parse new items to category
             category.Name = dto.Name;
             category.Description = dto.Description;
 
             if (dto.Image is not null)
             {
-                // delete old image
                 var deleteResult = await _fileService.DeleteImageAsync(category.ImagePath);
                 if (deleteResult is false) throw new ImageNotFoundException();
 
-                // upload new image
                 string newImagePath = await _fileService.UploadImageAsync(dto.Image);
 
-                // parse new path to category
                 category.ImagePath = newImagePath;
             }
-            // else category old image have to save
 
             category.UpdatedAt = TimeHelper.GetDateTime();
 

@@ -1,6 +1,6 @@
 ﻿namespace Baraka_Savdo.DataAccess.Interfaces.Dileveries;
 
-internal interface IDeliveryRepository : IRepository<Delivery, Delivery>, IGetAll<DeliveryViewModel>
+internal interface IDeliveryRepository : IRepository<Delivery>, IGetAll<Delivery>
 {
-    public Task<DeliveryViewModel> GetDeliverAsync(long id);
+    public Task<Delivery> GetDeliverAsync(long id);
 }

@@ -1,6 +1,6 @@
 ﻿namespace Baraka_Savdo.DataAccess.Interfaces.Products;
 
-public interface IProductRepository : IRepository<Product, ProductViewModel>,
-                                        IGetAll<ProductViewModel>, ISearchable<ProductViewModel>
+public interface IProductRepository : IRepository<Product>,
+                                        IGetAll<Product>, ISearchable<Product>
 {
 }

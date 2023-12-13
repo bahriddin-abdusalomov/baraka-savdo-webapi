@@ -17,3 +17,4 @@ namespace Baraka_Savdo.Domain.Entities.Categories
         public string ImagePath { get; set; } = string.Empty;
     }
 }
+            

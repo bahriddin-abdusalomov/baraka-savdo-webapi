@@ -1,6 +1,6 @@
 ﻿namespace Baraka_Savdo.DataAccess.Interfaces;
 
-public interface IRepository<TEntity, TViewModel>
+public interface IRepository<TEntity>
 {
     public Task<int> CreateAsync(TEntity entity);
 
@@ -8,7 +8,7 @@ public interface IRepository<TEntity, TViewModel>
 
     public Task<int> DeleteAsync(long id);
 
-    public Task<TViewModel?> GetByIdAsync(long id);
+    public Task<TEntity?> GetByIdAsync(long id);
 
     public Task<long> CountAsync();
 }

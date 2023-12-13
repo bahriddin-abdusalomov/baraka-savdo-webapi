@@ -12,7 +12,7 @@ namespace Baraka_Savdo.Domain.Entities.Products
         
         public long SupplierId { get; set;}
         
-        public int Quantity { get; set; }
+        public int Quantity { get; set; }   
         
         public double UnitPrice { get; set; }
         

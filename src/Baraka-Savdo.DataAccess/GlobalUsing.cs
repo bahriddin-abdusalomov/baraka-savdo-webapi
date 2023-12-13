@@ -13,3 +13,5 @@ global using Baraka_Savdo.DataAccess.Interfaces.Categories;
 global using Dapper;
 global using static Dapper.SqlMapper;
 global using Npgsql;
+global using Baraka_Savdo.DataAccess.Interfaces.Users;
+global using System.ComponentModel.DataAnnotations;

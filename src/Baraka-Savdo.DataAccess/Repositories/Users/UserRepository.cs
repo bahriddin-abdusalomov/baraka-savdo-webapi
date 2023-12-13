@@ -40,7 +40,6 @@ public class UserRepository : BaseRepository, IUserRepository
 
             var result = await _connection.ExecuteAsync(query, entity);
             return result;
-
         }
         catch
         {
@@ -73,7 +72,7 @@ public class UserRepository : BaseRepository, IUserRepository
         }
     }
 
-    public async Task<IList<UserViewModel>> GetAllAsync(PaginationParams @params)
+    public async Task<IList<User>> GetAllAsync(PaginationParams @params)
     {
         try
         {
@@ -82,13 +81,13 @@ public class UserRepository : BaseRepository, IUserRepository
             string query = $"Select * From users order by id desc  " +
                 $"offset {@params.GetSkipCount()} limit {@params.PageSize} ";
 
-            var result = (await _connection.QueryAsync<UserViewModel>(query)).ToList();
+            var result = (await _connection.QueryAsync<User>(query)).ToList();
             return result;
 
         }
         catch
         {
-            return new List<UserViewModel>();
+            return new List<User>();
         }
         finally
         {
@@ -96,13 +95,13 @@ public class UserRepository : BaseRepository, IUserRepository
         }
     }
 
-    public async Task<UserViewModel?> GetByIdAsync(long id)
+    public async Task<User?> GetByIdAsync(long id)
     {
         try
         {
             await _connection.OpenAsync();
             string query = "Select * From users Where id = @Id";
-            var result = await _connection.QuerySingleAsync<UserViewModel>(query, new { Id = id });
+            var result = await _connection.QuerySingleAsync<User>(query, new { Id = id });
             return result;
         }
         catch
@@ -115,7 +114,7 @@ public class UserRepository : BaseRepository, IUserRepository
         }
     }
 
-    public async Task<IList<UserViewModel>?> GetByPhoneAsync(string phone)
+    public async Task<IList<User>?> GetByPhoneAsync(string phone)
     {
         try
         {
@@ -125,7 +124,7 @@ public class UserRepository : BaseRepository, IUserRepository
                "FROM users " +
                "WHERE phone_number LIKE '%' + @searchPhoneNumber + '%';";
 
-            var result = (await _connection.QueryAsync<UserViewModel>(query, new { searchPhoneNumber = phone })).ToList();
+            var result = (await _connection.QueryAsync<User>(query, new { searchPhoneNumber = phone })).ToList();
 
             return result;
         }
@@ -139,7 +138,7 @@ public class UserRepository : BaseRepository, IUserRepository
         }
     }
 
-    public async Task<(int TModel, List<UserViewModel>)> SearchAsync(string search, PaginationParams @params)
+    public async Task<(int TModel, List<User>)> SearchAsync(string search, PaginationParams @params)
     {
         try
         {
@@ -158,13 +157,13 @@ public class UserRepository : BaseRepository, IUserRepository
                "    country LIKE '%' + @searchTerm + '%' OR " +
                "    region LIKE '%' + @searchTerm + '%';";
 
-            var result = (await _connection.QueryAsync<UserViewModel>(query, new { searchTerm = search })).ToList();
+            var result = (await _connection.QueryAsync<User>(query, new { searchTerm = search })).ToList();
 
             return (@params.PageNumber, result);
         }
         catch
         {
-            return (@params.PageNumber, new List<UserViewModel>());
+            return (@params.PageNumber, new List<User>());
         }
         finally
         {
