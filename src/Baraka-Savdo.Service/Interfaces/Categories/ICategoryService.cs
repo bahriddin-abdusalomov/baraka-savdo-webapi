@@ -1,4 +1,6 @@
-﻿namespace Baraka_Savdo.Service.Interfaces.Categories;
+﻿using Baraka_Savdo.Domain.Entities.Categories;
+
+namespace Baraka_Savdo.Service.Interfaces.Categories;
 
 public interface ICategoryService
 {
