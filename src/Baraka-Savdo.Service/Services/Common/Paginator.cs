@@ -1,4 +1,6 @@
-﻿namespace Baraka_Savdo.Service.Services.Common;
+﻿using Newtonsoft.Json;
+
+namespace Baraka_Savdo.Service.Services.Common;
 
 public class Paginator : IPaginator
 {
