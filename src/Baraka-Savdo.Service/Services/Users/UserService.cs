@@ -1,12 +1,9 @@
-﻿using Baraka_Savdo.DataAccess.Interfaces;
-using Baraka_Savdo.DataAccess.Interfaces.Users;
+﻿using Baraka_Savdo.DataAccess.Interfaces.Users;
 using Baraka_Savdo.Domain.Entities.Users;
 using Baraka_Savdo.Domain.Exceptions.Files;
 using Baraka_Savdo.Domain.Exceptions.Users;
 using Baraka_Savdo.Service.Common.Helpers;
 using Baraka_Savdo.Service.Interfaces.Users;
-
-using System.Numerics;
 
 namespace Baraka_Savdo.Service.Services.Users;
 
