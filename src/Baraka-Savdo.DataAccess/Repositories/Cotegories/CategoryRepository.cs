@@ -76,7 +76,6 @@ public class CategoryRepository : BaseRepository, ICategoryRepository
 
             var result = (await _connection.QueryAsync<Category>(query)).ToList();
             return result;
-
         }
         catch
         {   
