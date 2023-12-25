@@ -1,12 +1,9 @@
 ﻿using Baraka_Savdo.DataAccess.Interfaces.Categories;
-using Baraka_Savdo.DataAccess.Utils;
 using Baraka_Savdo.Domain.Entities.Categories;
 using Baraka_Savdo.Domain.Exceptions.Categories;
 using Baraka_Savdo.Domain.Exceptions.Files;
 using Baraka_Savdo.Service.Common.Helpers;
-using Baraka_Savdo.Service.Dtos.Categories;
 using Baraka_Savdo.Service.Interfaces.Categories;
-using Baraka_Savdo.Service.Interfaces.Common;
 
 namespace Baraka_Savdo.Service.Services.Catecories
 {
