@@ -2,5 +2,5 @@
 
 public interface ISearchable<TModel>
 {
-    public Task<(int TModel, List<TModel>)> SearchAsync(string search, PaginationParams @params);
+    public Task<(int count, List<TModel>)> SearchAsync(string search, PaginationParams @params);
 }
