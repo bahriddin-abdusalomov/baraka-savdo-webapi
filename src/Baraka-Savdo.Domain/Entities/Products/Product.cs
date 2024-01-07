@@ -13,7 +13,5 @@
         public long CategoryId { get; set; }
 
         public long CompanyId { get; set; }
-
-
     }
 }

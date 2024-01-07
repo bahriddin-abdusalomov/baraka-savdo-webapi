@@ -31,7 +31,7 @@ public class UserService : IUserService
 
     public async Task<bool> CreateAsync(UserCreateDto dto)
     {
-        string imagePath = await _fileService.UploadImageAsync(dto.ImagePath);
+        string imagePath = await _fileService.UploadAvatarAsync(dto.ImagePath);
         User user = new User()
         {
             FirstName = dto.FirstName,
