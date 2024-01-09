@@ -31,7 +31,7 @@ public class CompanyRepository : BaseRepository, ICompanyRepository
 
             string query = "INSERT INTO public.companies(name, description, image_path, phone_number, created_at, updated_at)" +
                 " VALUES (@Name, @Description, @ImagePath, @PhoneNumber, @CreatedAt, @UpdatedAt);";
-            var result = await _connection.ExecuteAsync(query, entity);
+            var result = await _connection.ExecuteAsync(query, entity);  
             return result;
         }
         catch
