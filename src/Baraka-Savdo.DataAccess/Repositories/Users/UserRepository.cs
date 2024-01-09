@@ -142,7 +142,7 @@ public class UserRepository : BaseRepository, IUserRepository
         }
     }
 
-    public async Task<(int TModel, List<User>)> SearchAsync(string search, PaginationParams @params)
+    public async Task<(int count, List<User>)> SearchAsync(string search, PaginationParams @params)
     {
         try
         {
