@@ -111,7 +111,7 @@ public class ProductRepository : BaseRepository, IProductRepository
         }
     }
 
-    public async Task<(int TModel, List<Product>)> SearchAsync(string search, PaginationParams @params)
+    public async Task<(int count, List<Product>)> SearchAsync(string search, PaginationParams @params)
     {
         try
         {
