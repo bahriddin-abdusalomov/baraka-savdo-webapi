@@ -1,16 +1,20 @@
 using Baraka_Savdo.DataAccess.Interfaces.Categories;
 using Baraka_Savdo.DataAccess.Interfaces.Companies;
+using Baraka_Savdo.DataAccess.Interfaces.Products;
 using Baraka_Savdo.DataAccess.Interfaces.Users;
 using Baraka_Savdo.DataAccess.Repositories.Companies;
 using Baraka_Savdo.DataAccess.Repositories.Cotegories;
+using Baraka_Savdo.DataAccess.Repositories.Products;
 using Baraka_Savdo.DataAccess.Repositories.Users;
 using Baraka_Savdo.Service.Interfaces.Categories;
 using Baraka_Savdo.Service.Interfaces.Common;
 using Baraka_Savdo.Service.Interfaces.Companies;
+using Baraka_Savdo.Service.Interfaces.Products;
 using Baraka_Savdo.Service.Interfaces.Users;
 using Baraka_Savdo.Service.Services.Catecories;
 using Baraka_Savdo.Service.Services.Common;
 using Baraka_Savdo.Service.Services.Companies;
+using Baraka_Savdo.Service.Services.Products;
 using Baraka_Savdo.Service.Services.Users;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -25,10 +29,16 @@ builder.Services.AddSwaggerGen();
 builder.Services.AddHttpContextAccessor();
 builder.Services.AddScoped<ICategoryService, CategoryService>();
 builder.Services.AddScoped<ICategoryRepository, CategoryRepository>();
+
 builder.Services.AddScoped<ICompanyRepository, CompanyRepository>();
 builder.Services.AddScoped<ICompanyService, CompanyService>();
+
 builder.Services.AddScoped<IUserRepository, UserRepository>();
 builder.Services.AddScoped<IUserService, UserService>();
+
+builder.Services.AddScoped<IProductRepository, ProductRepository>();
+builder.Services.AddScoped<IProductService,  ProductService>();
+
 builder.Services.AddScoped<IFileService, FileService>();
 builder.Services.AddScoped<IPaginator, Paginator>();
 
