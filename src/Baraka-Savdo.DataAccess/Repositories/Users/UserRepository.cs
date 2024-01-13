@@ -30,7 +30,8 @@ public class UserRepository : BaseRepository, IUserRepository
             await _connection.OpenAsync();
 
             string query = "INSERT INTO public.users(first_name, last_name, phone_number, phone_number_confirmed, passport_seria_number, is_male, birth_date, country, region, password_hash, salt, image_path, last_activity, identity_role, created_at, updated_at) " +
-               $"VALUES (@FirstName, @LastName, @PhoneNumber, @PhoneNumberConfirmed, @PassportSeriaNumber, @IsMale, '{entity.BirthDate.Year}-{entity.BirthDate.Month}-{entity.BirthDate.Day}', @Country, @Region, @PasswordHash, @Salt, @ImagePath, @LastActivity, @IdentityRole, @CreatedAt, @UpdatedAt);";
+           $"VALUES (@FirstName, @LastName, @PhoneNumber, @PhoneNumberConfirmed, @PassportSeriaNumber, @IsMale, '{DateTime.Now.Year}-{DateTime.Now.Month}-{DateTime.Now.Day}', @Country, @Region, @PasswordHash, @Salt, @ImagePath, @LastActivity, @IdentityRole, @CreatedAt, @UpdatedAt);";
+
             var result = await _connection.ExecuteAsync(query, entity);
             return result;
         }
@@ -107,25 +108,20 @@ public class UserRepository : BaseRepository, IUserRepository
         }
     }
 
-    public async Task<IList<User>?> GetByPhoneAsync(string phone)
+    public async Task<User> GetByPhoneAsync(string phone)
     {
         try
         {
             await _connection.OpenAsync();
-
-            string query = "SELECT * " +
-               "FROM users " +
-               "WHERE phone_number LIKE '%' + @searchPhoneNumber + '%';";
-
-            var result = (await _connection.QueryAsync<User>(query, new { searchPhoneNumber = phone })).ToList();
-
-            return result;
+            string query = "SELECT * FROM users where phone_number = @PhoneNumber";
+            var data = await _connection.QuerySingleAsync<User>(query, new { PhoneNumber = phone });
+            return data;
         }
         catch
         {
             return null;
         }
-        finally
+        finally 
         {
             await _connection.CloseAsync();
         }
