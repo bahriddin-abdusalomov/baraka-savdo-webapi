@@ -1,4 +1,5 @@
-﻿using Baraka_Savdo.Domain.Entities.Users;
+﻿using Baraka_Savdo.DataAccess.Utils;
+using Baraka_Savdo.Domain.Entities.Users;
 using Baraka_Savdo.Service.Dtos.Users;
 using Baraka_Savdo.Service.Interfaces.Users;
 
@@ -11,7 +12,7 @@ namespace Baraka_Savdo.WebApi.Controllers
     public class UsersController : ControllerBase
     {
         private readonly IUserService _userService;
-        private readonly int maxPageSize = 30;
+        private readonly int maxPageSize = 10;
 
         public UsersController(IUserService userService)
         {
@@ -25,17 +26,17 @@ namespace Baraka_Savdo.WebApi.Controllers
             return Ok(result);
         }
 
-        [HttpGet("user")]
-        public async Task<IActionResult> GetByIdAsync([FromForm] long id)
+        [HttpGet]
+        public async Task<IActionResult> GetByIdAsync([FromQuery] long id)
         {
             User user = await _userService.GetByIdAsync(id);
             return Ok(user);
         }
 
-        [HttpGet("users")]
-        public async Task<IActionResult> GetAllAsync([FromForm] int page)
+        [HttpGet]
+        public async Task<IActionResult> GetAllAsync([FromQuery] int page)
         {
-            var users = await _userService.GetAllAsync(new DataAccess.Utils.PaginationParams(page, maxPageSize));
+            var users = await _userService.GetAllAsync(new PaginationParams(page, maxPageSize));
             return Ok(users);
         }
 
@@ -54,7 +55,7 @@ namespace Baraka_Savdo.WebApi.Controllers
         }
 
         [HttpPut]
-        public async Task<IActionResult> UpdateAsync([FromForm] long id, UserUpdateDto userUpdateDto)
+        public async Task<IActionResult> UpdateAsync(long id, [FromForm] UserUpdateDto userUpdateDto)
         {
             bool result = await _userService.UpdateAsync(id, userUpdateDto);
             return Ok(result);
