@@ -1,34 +1,38 @@
-﻿namespace Baraka_Savdo.Service.Dtos.Users;
+﻿using Baraka_Savdo.Domain.Enums;
 
-public class UserUpdateDto
+namespace Baraka_Savdo.Service.Dtos.Users
 {
-    [MaxLength(50)]
-    public string FirstName { get; set; } = string.Empty;
-    [MaxLength(50)]
-    public string LastName { get; set; } = string.Empty;
+    public class UserUpdateDto
+    {
+        [MaxLength(50)]
+        public string FirstName { get; set; } = string.Empty;
+        [MaxLength(50)]
+        public string LastName { get; set; } = string.Empty;
 
-    public bool IsMale { get; set; }
+        public bool IsMale { get; set; }
 
-    public DateOnly BirthDate { get; set; }
+        public DateTime BirthDate { get; set; }
 
-    public string Country { get; set; } = string.Empty;
+        public string Country { get; set; } = string.Empty;
 
-    public string Region { get; set; } = string.Empty;
+        public string Region { get; set; } = string.Empty;
 
-    public IFormFile? ImagePath { get; set; } 
+        public IFormFile ImagePath { get; set; } 
 
-    [MaxLength(13)]
-    public string PhoneNumber { get; set; } = string.Empty;
+        [MaxLength(13)]
+        public string PhoneNumber { get; set; } = string.Empty;
 
-    public bool PhoneNumberConfirmed { get; set; }
+        public bool PhoneNumberConfirmed { get; set; }
 
-    [MaxLength(9)]
-    public string PassportSeriaNumber { get; set; } = string.Empty;
+        [MaxLength(9)]
+        public string PassportSeriaNumber { get; set; } = string.Empty;
 
-    public string PasswordHash { get; set; } = string.Empty;
+        public string PasswordHash { get; set; } = string.Empty;
 
-    public string Salt { get; set; } = string.Empty;
+        public string Salt { get; set; } = string.Empty;
 
-    public DateTime LastActivity { get; set; }
+        public DateTime LastActivity { get; set; }
 
+        public IdentityRole IdentityRole { get; set; }
+    }
 }

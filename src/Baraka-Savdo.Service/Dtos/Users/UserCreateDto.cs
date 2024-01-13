@@ -1,4 +1,6 @@
-﻿namespace Baraka_Savdo.Service.Dtos.Users;
+﻿using Baraka_Savdo.Domain.Enums;
+
+namespace Baraka_Savdo.Service.Dtos.Users;
 
 public class UserCreateDto
 {
@@ -9,7 +11,7 @@ public class UserCreateDto
 
     public bool IsMale { get; set; }
 
-    public DateOnly BirthDate { get; set; }
+    public DateTime BirthDate { get; set; }
 
     public string Country { get; set; } = string.Empty;
 
@@ -30,4 +32,7 @@ public class UserCreateDto
     public string Salt { get; set; } = string.Empty;
 
     public DateTime LastActivity { get; set; }
+
+    public IdentityRole IdentityRole { get; set; }
+
 }
