@@ -10,19 +10,20 @@ namespace Baraka_Savdo.Domain.Entities
     public abstract class Human : Auditable
     {
         [MaxLength(50)]
-        public string FirstName { get; set; } = string.Empty;
+        public string? FirstName { get; set; } 
+
         [MaxLength(50)]
-        public string LastName { get; set; } = string.Empty;
+        public string? LastName { get; set; } 
 
-        public bool IsMale{ get; set; }
+        public bool? IsMale{ get; set; }
 
-        public DateTime BirthDate { get; set; }
+        public DateTime? BirthDate { get; set; }
 
-        public string Country { get; set; } = string.Empty;
+        public string? Country { get; set; }
 
-        public string Region { get; set; } = string.Empty;
+        public string? Region { get; set; } 
 
-        public string ImagePath { get ; set; } = string.Empty;
+        public string? ImagePath { get ; set; } 
 
     }
 }
