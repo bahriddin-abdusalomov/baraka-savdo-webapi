@@ -75,10 +75,10 @@ public class UserService : IUserService
         return users;
     }
 
-    public async Task<User> GetByIdAsync(long UserId)
+    public async Task<User> GetByIdAsync(long userId)
     {
-        var user = await _userRepository.GetByIdAsync(UserId);
-        if (user == null) throw new UserNotFoundException();
+        var user = await _userRepository.GetByIdAsync(userId);
+        if (user is null) throw new UserNotFoundException();
 
         return user;
     }
