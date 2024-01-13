@@ -21,6 +21,6 @@ namespace Baraka_Savdo.Domain.Entities.Deliveries
 
         public string Salt { get; set; } = string.Empty;
 
-        public DateTime LastActivity { get; set; }
+        //public DateTime LastActivity { get; set; }
     }
 }
