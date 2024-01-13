@@ -14,7 +14,7 @@ namespace Baraka_Savdo.Domain.Entities.Users
         public bool PhoneNumberConfirmed { get; set; }
 
         [MaxLength(9)]
-        public string PassportSeriaNumber { get; set; } = string.Empty;
+        public string? PassportSeriaNumber { get; set; } 
 
         public string PasswordHash { get; set; } = string.Empty;
 
