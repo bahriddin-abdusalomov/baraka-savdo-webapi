@@ -3,5 +3,5 @@
 public interface IUserRepository : IRepository<User>,
       IGetAll<User>, ISearchable<User>
 {
-    public Task<IList<User>?> GetByPhoneAsync(string phone);
+    public Task<User> GetByPhoneAsync(string phone);
 }
