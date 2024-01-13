@@ -16,7 +16,7 @@ namespace Baraka_Savdo.Domain.Entities
 
         public bool IsMale{ get; set; }
 
-        public DateOnly BirthDate { get; set; }
+        public DateTime BirthDate { get; set; }
 
         public string Country { get; set; } = string.Empty;
 
