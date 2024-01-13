@@ -1,62 +1,83 @@
-﻿using Baraka_Savdo.Service.Interfaces.Common;
-using Microsoft.AspNetCore.Http;
-using Baraka_Savdo.Service.Common.Helpers;
+﻿using Baraka_Savdo.Service.Common.Helpers;
+
 using Microsoft.AspNetCore.Hosting;
 
 namespace Baraka_Savdo.Service.Services.Common
 {
     public class FileService : IFileService
     {
-            private readonly string MEDIA = "media";
-            private readonly string IMAGES = "images";
-            private readonly string AVATARS = "avatars";
-            private readonly string ROOTPATH;
+        private readonly string MEDIA = "media";
+        private readonly string IMAGES = "images";
+        private readonly string AVATARS = "avatars";
+        private readonly string ROOTPATH;
 
-            public FileService(IWebHostEnvironment env)
-            {
-                this.ROOTPATH = env.WebRootPath;
-            }
-            public Task<bool> DeleteAvatarAsync(string file)
-            {
-                throw new NotImplementedException();
-            }
+        public FileService(IWebHostEnvironment env)
+        {
+            this.ROOTPATH = env.WebRootPath;
+        }
+        public async Task<bool> DeleteAvatarAsync(string file)
+        {
+            string path = Path.Combine(ROOTPATH, file);
 
-            public async Task<bool> DeleteImageAsync(string imagePath)
+            if (File.Exists(path))
             {
-                string path = Path.Combine(ROOTPATH, imagePath);
-
-                if(File.Exists(path))
+                await Task.Run(() =>
                 {
-                   await  Task.Run(() =>
-                        {
-                            File.Delete(path);
-                        });
-                   return true;
-                }
-                else
-                {
-                   return false;
-                }
-
+                    File.Delete(path);
+                });
+                return true;
             }
-
-            public Task<string> UploadAvatarAsync(IFormFile file)
+            else
             {
-                throw new NotImplementedException();
+                return false;
             }
+        }
 
-            public async Task<string> UploadImageAsync(IFormFile file)
+        public async Task<bool> DeleteImageAsync(string imagePath)
+        {
+            string path = Path.Combine(ROOTPATH, imagePath);
+
+            if (File.Exists(path))
             {
-                string newImageName = MediaHelper.MakeImageName(file.FileName);
-                string subPath = Path.Combine(MEDIA, IMAGES, newImageName);
-
-                string path = Path.Combine(ROOTPATH, subPath);
-
-                FileStream fileStream = new FileStream(path, FileMode.Create);
-                await file.CopyToAsync(fileStream);
-                fileStream.Close();
-
-                return subPath;
+                await Task.Run(() =>
+                     {
+                         File.Delete(path);
+                     });
+                return true;
             }
+            else
+            {
+                return false;
+            }
+
+        }
+
+        public async Task<string> UploadAvatarAsync(IFormFile file)
+        {
+            string newImageName = MediaHelper.MakeImageName(file.FileName);
+            string subPath = Path.Combine(MEDIA, AVATARS, newImageName);
+
+            string path = Path.Combine(ROOTPATH, subPath);
+
+            FileStream fileStream = new FileStream(path, FileMode.Create);
+            await file.CopyToAsync(fileStream);
+            fileStream.Close();
+
+            return subPath;
+        }
+
+        public async Task<string> UploadImageAsync(IFormFile file)
+        {
+            string newImageName = MediaHelper.MakeImageName(file.FileName);
+            string subPath = Path.Combine(MEDIA, IMAGES, newImageName);
+
+            string path = Path.Combine(ROOTPATH, subPath);
+
+            FileStream fileStream = new FileStream(path, FileMode.Create);
+            await file.CopyToAsync(fileStream);
+            fileStream.Close();
+
+            return subPath;
+        }
     }
 }
