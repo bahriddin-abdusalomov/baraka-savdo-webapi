@@ -1,4 +1,6 @@
-﻿using System;
+﻿using Baraka_Savdo.Domain.Enums;
+
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
@@ -19,5 +21,7 @@ namespace Baraka_Savdo.Domain.Entities.Users
         public string Salt { get; set; } = string.Empty;
 
         public DateTime LastActivity { get; set; }
+
+        public IdentityRole IdentityRole { get; set; }
     }
 }
