@@ -41,12 +41,7 @@ public class UserService : IUserService
             Country = dto.Country,
             Region = dto.Region,
             ImagePath = imagePath,
-            PhoneNumber = dto.PhoneNumber,
-            PhoneNumberConfirmed = dto.PhoneNumberConfirmed,
             PassportSeriaNumber = dto.PassportSeriaNumber,
-            PasswordHash = dto.PasswordHash,
-            Salt = dto.Salt,
-            LastActivity = dto.LastActivity,
             CreatedAt = TimeHelper.GetDateTime(),
             UpdatedAt = TimeHelper.GetDateTime()
         };
@@ -83,10 +78,10 @@ public class UserService : IUserService
         return user;
     }
 
-    public async Task<IList<User>?> GetByPhoneAsync(string phone)
+    public async Task<User?> GetByPhoneAsync(string phone)
     {
-        var users = await _userRepository.GetByPhoneAsync(phone);
-        return users;
+        var user = await _userRepository.GetByPhoneAsync(phone);
+        return user;
     }
 
     public async Task<(int TModel, List<User>)> SearchAsync(string search, PaginationParams @params)
@@ -107,8 +102,6 @@ public class UserService : IUserService
         user.BirthDate = dto.BirthDate;
         user.Country = dto.Country;
         user.Region = dto.Region;
-        user.PhoneNumber = dto.PhoneNumber;
-        user.PhoneNumberConfirmed = dto.PhoneNumberConfirmed;
         user.PassportSeriaNumber = dto.PassportSeriaNumber;
         
         if (dto.ImagePath is not null)

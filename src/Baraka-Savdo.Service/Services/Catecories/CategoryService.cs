@@ -34,7 +34,7 @@ namespace Baraka_Savdo.Service.Services.Catecories
             {
                 ImagePath = imagePath,
                 Name = dto.Name,
-                Description = dto.Description,
+                //Description = dto.Description,
                 CreatedAt = TimeHelper.GetDateTime(),
                 UpdatedAt = TimeHelper.GetDateTime()
             };
@@ -77,7 +77,7 @@ namespace Baraka_Savdo.Service.Services.Catecories
             if (category is null) throw new CategoryNotFoundException();
 
             category.Name = dto.Name;
-            category.Description = dto.Description;
+            //category.Description = dto.Description;
 
             if (dto.Image is not null)
             {

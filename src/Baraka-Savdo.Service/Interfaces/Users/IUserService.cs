@@ -12,7 +12,7 @@ public interface IUserService
 
     public Task<User> GetByIdAsync(long UserId);
   
-    public Task<IList<User>?> GetByPhoneAsync(string Name);
+    public Task<User> GetByPhoneAsync(string Name);
     
     public Task<IList<User>> GetAllAsync(PaginationParams @params);
 

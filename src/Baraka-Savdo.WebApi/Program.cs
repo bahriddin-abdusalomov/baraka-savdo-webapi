@@ -6,11 +6,13 @@ using Baraka_Savdo.DataAccess.Repositories.Companies;
 using Baraka_Savdo.DataAccess.Repositories.Cotegories;
 using Baraka_Savdo.DataAccess.Repositories.Products;
 using Baraka_Savdo.DataAccess.Repositories.Users;
+using Baraka_Savdo.Service.Interfaces.Auth;
 using Baraka_Savdo.Service.Interfaces.Categories;
 using Baraka_Savdo.Service.Interfaces.Common;
 using Baraka_Savdo.Service.Interfaces.Companies;
 using Baraka_Savdo.Service.Interfaces.Products;
 using Baraka_Savdo.Service.Interfaces.Users;
+using Baraka_Savdo.Service.Services.Auth;
 using Baraka_Savdo.Service.Services.Catecories;
 using Baraka_Savdo.Service.Services.Common;
 using Baraka_Savdo.Service.Services.Companies;
@@ -41,6 +43,10 @@ builder.Services.AddScoped<IProductService,  ProductService>();
 
 builder.Services.AddScoped<IFileService, FileService>();
 builder.Services.AddScoped<IPaginator, Paginator>();
+
+builder.Services.AddScoped<IAuthService, AuthService>();
+builder.Services.AddScoped<IIdentityService, IdentityService>();
+builder.Services.AddScoped<ITokenService, TokenService>();
 
 var app = builder.Build();
 
