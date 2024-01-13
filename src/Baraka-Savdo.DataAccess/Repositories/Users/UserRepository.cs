@@ -1,7 +1,4 @@
-﻿using static System.Net.Mime.MediaTypeNames;
-using System.Diagnostics.Metrics;
-
-namespace Baraka_Savdo.DataAccess.Repositories.Users;
+﻿namespace Baraka_Savdo.DataAccess.Repositories.Users;
 
 public class UserRepository : BaseRepository, IUserRepository
 {
@@ -32,16 +29,8 @@ public class UserRepository : BaseRepository, IUserRepository
         {
             await _connection.OpenAsync();
 
-            string query = "INSERT INTO public.users(" +
-                            "first_name, last_name, " +
-                            "is_male, birth_date, country, region, " +
-                            "image_path, phone_number, phone_number_confirmed, passport_seria_number, password_hash, salt," +
-                            "last_activity, created_at, updated_at) " +
-                            "VALUES (@FirstName, @LastName, " +
-                            "@IsMale, @BirthDate, @Country, @Region, @ImagePath,   @PhoneNumber, @PhoneNumberConfirmed," +
-                            "@PassportSeriaNumber,  @PasswordHash, @Salt," +
-                            "@LastActivity, @CreatedAt, @UpdatedAt);";
-           
+            string query = "INSERT INTO public.users(first_name, last_name, phone_number, phone_number_confirmed, passport_seria_number, is_male, birth_date, country, region, password_hash, salt, image_path, last_activity, identity_role, created_at, updated_at) " +
+               $"VALUES (@FirstName, @LastName, @PhoneNumber, @PhoneNumberConfirmed, @PassportSeriaNumber, @IsMale, '{entity.BirthDate.Year}-{entity.BirthDate.Month}-{entity.BirthDate.Day}', @Country, @Region, @PasswordHash, @Salt, @ImagePath, @LastActivity, @IdentityRole, @CreatedAt, @UpdatedAt);";
             var result = await _connection.ExecuteAsync(query, entity);
             return result;
         }
