@@ -1,5 +1,4 @@
-﻿using Baraka_Savdo.DataAccess.Interfaces.Companies;
-namespace Baraka_Savdo.DataAccess.Repositories.Companies;
+﻿namespace Baraka_Savdo.DataAccess.Repositories.Companies;
 
 public class CompanyRepository : BaseRepository, ICompanyRepository
 {
