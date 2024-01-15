@@ -77,7 +77,6 @@ public class UserRepository : BaseRepository, IUserRepository
 
             var result = (await _connection.QueryAsync<User>(query)).ToList();
             return result;
-
         }
         catch
         {
