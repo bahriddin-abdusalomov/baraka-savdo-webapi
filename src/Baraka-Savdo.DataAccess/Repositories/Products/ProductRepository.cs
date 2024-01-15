@@ -1,8 +1,4 @@
-﻿using Baraka_Savdo.DataAccess.Interfaces.Products;
-
-using System.Data.Common;
-
-namespace Baraka_Savdo.DataAccess.Repositories.Products;
+﻿namespace Baraka_Savdo.DataAccess.Repositories.Products;
 
 public class ProductRepository : BaseRepository, IProductRepository
 {
@@ -37,7 +33,6 @@ public class ProductRepository : BaseRepository, IProductRepository
                 " VALUES (@Name, @Description, @ImagePath, @UnitPrice, @CategoryId, @CompanyId, @CreatedAt, @UpdatedAt);";
             var result = await _connection.ExecuteAsync(query, entity);
             return result;
-
         }
         catch
         {
@@ -58,7 +53,6 @@ public class ProductRepository : BaseRepository, IProductRepository
             string query = "Delete From products Where id = @Id";
             var result = await _connection.ExecuteAsync(query, new { Id = id });
             return result;
-
         }
         catch
         {
