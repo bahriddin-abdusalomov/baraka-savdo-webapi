@@ -1,9 +1,4 @@
-﻿using Baraka_Savdo.DataAccess.Interfaces.Dileveries;
-
-using static System.Net.Mime.MediaTypeNames;
-using System.Diagnostics.Metrics;
-
-namespace Baraka_Savdo.DataAccess.Repositories.Deliveries;
+﻿namespace Baraka_Savdo.DataAccess.Repositories.Deliveries;
 
 public class DeliveryRepository : BaseRepository, IDeliveryRepository
 {
