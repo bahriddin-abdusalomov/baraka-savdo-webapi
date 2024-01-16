@@ -18,6 +18,9 @@ using Baraka_Savdo.Service.Services.Common;
 using Baraka_Savdo.Service.Services.Companies;
 using Baraka_Savdo.Service.Services.Products;
 using Baraka_Savdo.Service.Services.Users;
+using Baraka_Savdo.WebApi.Configurations;
+
+using Twilio.Clients;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -27,6 +30,8 @@ builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+builder.SwaggerConfigure();
+builder.JWTConfigure();
 
 builder.Services.AddHttpContextAccessor();
 builder.Services.AddScoped<ICategoryService, CategoryService>();
@@ -47,6 +52,8 @@ builder.Services.AddScoped<IPaginator, Paginator>();
 builder.Services.AddScoped<IAuthService, AuthService>();
 builder.Services.AddScoped<IIdentityService, IdentityService>();
 builder.Services.AddScoped<ITokenService, TokenService>();
+
+builder.Services.AddHttpClient<ITwilioRestClient, TwilioClient>();
 
 var app = builder.Build();
 
