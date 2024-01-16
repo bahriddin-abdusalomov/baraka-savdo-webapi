@@ -5,6 +5,6 @@ namespace Baraka_Savdo.Service.Interfaces.Auth;
 public interface IAuthService
 {
     public Task<bool> RegisterAsync(RegisterDto registerDto);
-    public Task<(bool result, string token)> LoginAsync(LoginDto loginDto);
-    public Task<(bool result, string token)> ResetPasswordAsync(ResetPasswordDto resetPasswordDto);
+    public Task<string> LoginAsync(LoginDto loginDto);
+    public Task<bool> ResetPasswordAsync(ResetPasswordDto resetPasswordDto);
 }
