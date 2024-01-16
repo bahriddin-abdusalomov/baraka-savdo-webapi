@@ -1,4 +1,5 @@
 ﻿using Baraka_Savdo.DataAccess.Interfaces.Users;
+using Baraka_Savdo.Domain.Entities.Users;
 using Baraka_Savdo.Domain.Exceptions.Password;
 using Baraka_Savdo.Domain.Exceptions.Users;
 using Baraka_Savdo.Service.Common.Helpers;
@@ -26,18 +27,25 @@ public class AuthService : IAuthService
         var user = await _userRepository.GetByPhoneAsync(registerDto.PhoneNumber);
         if (user is not null) throw new UserAlreadyExistsException();
 
-        user.FirstName = registerDto.FirstName;
-        user.LastName = registerDto.LastName;
-        user.PhoneNumber = registerDto.PhoneNumber;
-        user.PhoneNumberConfirmed = true;
+        string salt = Guid.NewGuid().ToString();
 
-        user.Salt = Guid.NewGuid().ToString();
-        user.PasswordHash = PasswordHasher.HashPassword(registerDto.Password, user.Salt);
+        User registerUser = new User
+        {
+            FirstName = registerDto.FirstName,
+            LastName = registerDto.LastName,
+            PhoneNumber = registerDto.PhoneNumber,
+            PhoneNumberConfirmed = true,
 
-        user.CreatedAt = user.UpdatedAt = user.LastActivity = TimeHelper.GetDateTime();
-        user.IdentityRole = Domain.Enums.IdentityRole.User;
+            Salt = salt,
+            PasswordHash = PasswordHasher.HashPassword(registerDto.Password, salt),
 
-        var dbResult = await _userRepository.CreateAsync(user);
+            CreatedAt = TimeHelper.GetDateTime(),
+            UpdatedAt = TimeHelper.GetDateTime(),
+            LastActivity = TimeHelper.GetDateTime(),
+            IdentityRole = Domain.Enums.IdentityRole.User,
+    };
+
+        var dbResult = await _userRepository.CreateAsync(registerUser);
         return dbResult > 0;
     }
 
@@ -53,8 +61,11 @@ public class AuthService : IAuthService
         return (result: true, token: token);
     }
 
-    public Task<(bool result, string token)> ResetPasswordAsync(ResetPasswordDto resetPasswordDto)
+    public async Task<(bool result, string token)> ResetPasswordAsync(ResetPasswordDto resetPasswordDto)
     {
+        //var user = await _userRepository.GetByPhoneAsync(resetPasswordDto.PhoneNumber);
+        // T
+
         throw new NotImplementedException();
     }
 }
