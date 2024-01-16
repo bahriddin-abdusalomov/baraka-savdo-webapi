@@ -29,7 +29,7 @@ public class AuthService : IAuthService
 
         string salt = Guid.NewGuid().ToString();
 
-        User registerUser = new User
+        user = new User
         {
             FirstName = registerDto.FirstName,
             LastName = registerDto.LastName,
@@ -45,11 +45,11 @@ public class AuthService : IAuthService
             IdentityRole = Domain.Enums.IdentityRole.User,
     };
 
-        var dbResult = await _userRepository.CreateAsync(registerUser);
+        var dbResult = await _userRepository.CreateAsync(user);
         return dbResult > 0;
     }
 
-    public async Task<(bool result, string token)> LoginAsync(LoginDto loginDto)
+    public async Task<string> LoginAsync(LoginDto loginDto)
     {
         var user = await _userRepository.GetByPhoneAsync(loginDto.PhoneNumber);
         if (user is null) throw new UserNotFoundException();
@@ -61,11 +61,17 @@ public class AuthService : IAuthService
         return (result: true, token: token);
     }
 
-    public async Task<(bool result, string token)> ResetPasswordAsync(ResetPasswordDto resetPasswordDto)
+    public async Task<bool> ResetPasswordAsync(ResetPasswordDto resetPasswordDto)
     {
-        //var user = await _userRepository.GetByPhoneAsync(resetPasswordDto.PhoneNumber);
-        // T
+        var user = await _userRepository.GetByPhoneAsync(resetPasswordDto.PhoneNumber);
+        if (user is null) throw new UserNotFoundException();
 
-        throw new NotImplementedException();
+        string salt = Guid.NewGuid().ToString();
+
+        user.Salt = salt;
+        user.PasswordHash = PasswordHasher.HashPassword(resetPasswordDto.Password, salt);
+
+        var dbResult = await _userRepository.UpdateAsync(user.Id, user);
+        return dbResult > 0;
     }
 }
