@@ -26,14 +26,14 @@ public class AuthorizationController : ControllerBase
         return Ok(result);
     }
 
-    [HttpPost]
+    [HttpGet]
     public async Task<IActionResult> LoginAsync(LoginDto loginDto)
     {
         var result = await _authService.LoginAsync(loginDto);
         return Ok(result);
     }
 
-    [HttpPost]
+    [HttpPut]
     public async Task<IActionResult> ResetPasswordAsync(ResetPasswordDto resetPasswordDto)
     {
         var result = await _authService.ResetPasswordAsync(resetPasswordDto);
