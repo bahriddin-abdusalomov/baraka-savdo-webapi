@@ -1,12 +1,15 @@
 ﻿using Baraka_Savdo.Service.Dtos.Auth;
 using Baraka_Savdo.Service.Interfaces.Auth;
 
+using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Baraka_Savdo.WebApi.Controllers;
 
 [Route("api/[controller]/[action]")]
 [ApiController]
+[EnableCors("AllowSpecificOrigin")]
+
 public class AuthorizationController : ControllerBase
 {
     private readonly IAuthService _authService;
@@ -27,7 +30,7 @@ public class AuthorizationController : ControllerBase
     public async Task<IActionResult> LoginAsync(LoginDto loginDto)
     {
         var result = await _authService.LoginAsync(loginDto);
-        return Ok(result.token);
+        return Ok(result);
     }
 
     [HttpPost]
