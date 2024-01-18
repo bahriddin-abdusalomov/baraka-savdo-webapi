@@ -20,16 +20,24 @@ using Baraka_Savdo.Service.Services.Products;
 using Baraka_Savdo.Service.Services.Users;
 using Baraka_Savdo.WebApi.Configurations;
 
-using Twilio.Clients;
-
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
+
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("AllowSpecificOrigin",
+        builder => builder.WithOrigins("http://localhost:4200")
+                          .AllowAnyHeader()
+                          .AllowAnyMethod());
+});
+
 
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+
 builder.SwaggerConfigure();
 builder.JWTConfigure();
 
@@ -44,7 +52,7 @@ builder.Services.AddScoped<IUserRepository, UserRepository>();
 builder.Services.AddScoped<IUserService, UserService>();
 
 builder.Services.AddScoped<IProductRepository, ProductRepository>();
-builder.Services.AddScoped<IProductService,  ProductService>();
+builder.Services.AddScoped<IProductService, ProductService>();
 
 builder.Services.AddScoped<IFileService, FileService>();
 builder.Services.AddScoped<IPaginator, Paginator>();
@@ -52,8 +60,6 @@ builder.Services.AddScoped<IPaginator, Paginator>();
 builder.Services.AddScoped<IAuthService, AuthService>();
 builder.Services.AddScoped<IIdentityService, IdentityService>();
 builder.Services.AddScoped<ITokenService, TokenService>();
-
-builder.Services.AddHttpClient<ITwilioRestClient, TwilioClient>();
 
 var app = builder.Build();
 
@@ -65,6 +71,8 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
+
+app.UseCors("AllowSpecificOrigin");
 
 app.UseAuthorization();
 
