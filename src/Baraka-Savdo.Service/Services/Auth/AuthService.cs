@@ -58,7 +58,7 @@ public class AuthService : IAuthService
         if (hasherResult == false) throw new WrongPasswordException();
 
         string token = _tokenService.GenerateToken(user);
-        return (result: true, token: token);
+        return token;
     }
 
     public async Task<bool> ResetPasswordAsync(ResetPasswordDto resetPasswordDto)
