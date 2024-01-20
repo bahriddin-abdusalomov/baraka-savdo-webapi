@@ -21,7 +21,7 @@ public class AuthService : IAuthService
         this._userRepository = userRepository;
         this._tokenService = tokenService;
     }
-
+        
     public async Task<bool> RegisterAsync(RegisterDto registerDto)
     {
         var user = await _userRepository.GetByPhoneAsync(registerDto.PhoneNumber);
