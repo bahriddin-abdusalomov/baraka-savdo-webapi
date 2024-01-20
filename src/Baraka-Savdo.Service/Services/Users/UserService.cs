@@ -116,6 +116,6 @@ public class UserService : IUserService
         user.UpdatedAt = TimeHelper.GetDateTime();
 
         var dbResult = await _userRepository.UpdateAsync(userId, user);
-        return dbResult > 0; ;
+        return dbResult > 0; 
     }
 }
