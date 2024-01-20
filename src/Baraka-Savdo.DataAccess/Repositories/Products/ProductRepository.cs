@@ -70,7 +70,7 @@ public class ProductRepository : BaseRepository, IProductRepository
         {
             await _connection.OpenAsync();
 
-            string query = $"Select * From products order by id desc  " +
+            string query = $"Select * From products order by id asc  " +
                 $"offset {@params.GetSkipCount()} limit {@params.PageSize} ";
 
             var result = (await _connection.QueryAsync<Product>(query)).ToList();
