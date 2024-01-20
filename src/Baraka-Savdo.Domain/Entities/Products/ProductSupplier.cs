@@ -19,3 +19,4 @@ namespace Baraka_Savdo.Domain.Entities.Products
         public string Description { get; set; } = string.Empty;
     }
 }
+
