@@ -26,11 +26,14 @@ public class AuthorizationController : ControllerBase
         return Ok(result);
     }
 
-    [HttpGet]
+    [HttpPost]
     public async Task<IActionResult> LoginAsync(LoginDto loginDto)
     {
         var result = await _authService.LoginAsync(loginDto);
-        return Ok(result);
+
+        var response = new { token = result };
+       
+        return Ok(response);
     }
 
     [HttpPut]

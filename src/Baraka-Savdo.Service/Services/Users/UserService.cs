@@ -80,7 +80,7 @@ public class UserService : IUserService
 
     public async Task<User?> GetByPhoneAsync(string phone)
     {
-        var user = await _userRepository.GetByPhoneAsync(phone);
+        var user = await _userRepository.GetByEmailAsync(phone);
         return user;
     }
 

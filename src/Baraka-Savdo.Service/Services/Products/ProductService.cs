@@ -87,26 +87,21 @@ public class ProductService : IProductService
     public async Task<bool> UpdateAsync(long productId, ProductUpdateDto dto)
     {
         var product = await _productRepository.GetByIdAsync(productId);
-        if (product is null) throw new ProductNotFoundException();
+        if (product == null) throw new ProductNotFoundException();
+
+        string imagePath = await _fileService.UploadImageAsync(dto.ImagePath);
+        var userImage = await _fileService.DeleteImageAsync(product.ImagePath);
+        if (userImage == false) throw new ImageNotFoundException();
 
         product.Name = dto.Name;
+        product.ImagePath = imagePath;
         product.Description = dto.Description;
         product.UnitPrice = dto.UnitPrice;
         product.CategoryId = dto.CategoryId;
         product.CompanyId = dto.CompanyId;
-
-
-        if (dto.ImagePath is not null)
-        {
-            var deleteResult = await _fileService.DeleteImageAsync(product.ImagePath);
-            if (deleteResult is false) throw new ImageNotFoundException();
-
-            string newImagePath = await _fileService.UploadImageAsync(dto.ImagePath);
-            product.ImagePath = newImagePath;
-        }
         product.UpdatedAt = TimeHelper.GetDateTime();
 
-        var dbResult = await _productRepository.UpdateAsync(productId, product);
-        return dbResult > 0;
+        var result = await _productRepository.UpdateAsync(productId, product);
+        return result > 0;
     }
 }

@@ -11,7 +11,7 @@ namespace Baraka_Savdo.Domain.Entities.Users
         [MaxLength(13)]
         public string PhoneNumber { get; set; } = string.Empty;
 
-        public bool PhoneNumberConfirmed { get; set; }
+        public string Email { get; set; } = string.Empty;
 
         [MaxLength(9)]
         public string? PassportSeriaNumber { get; set; } 
