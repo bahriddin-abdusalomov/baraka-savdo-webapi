@@ -1,12 +1,14 @@
-﻿namespace Baraka_Savdo.DataAccess.Repositories;
+﻿using Microsoft.Extensions.Configuration;
+
+namespace Baraka_Savdo.DataAccess.Repositories;
 
 public class BaseRepository
 {
     protected readonly NpgsqlConnection _connection;
-    public BaseRepository() 
+    public BaseRepository(IConfiguration configuration) 
     { 
         Dapper.DefaultTypeMap.MatchNamesWithUnderscores = true;
-        this._connection = new NpgsqlConnection("server = localhost; port = 5432; " +
-            "user id = postgres; password = salom; database = savdo-db;");
+        var connectionString = configuration.GetConnectionString("DefaultConnection");
+        _connection = new NpgsqlConnection(connectionString);
     }
 }
