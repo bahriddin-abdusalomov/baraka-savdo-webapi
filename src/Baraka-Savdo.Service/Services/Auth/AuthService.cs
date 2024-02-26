@@ -25,7 +25,7 @@ public class AuthService : IAuthService
         this._userRepository = userRepository;
         this._tokenService = tokenService;
     }
-        
+
     public async Task<bool> RegisterAsync(RegisterDto registerDto)
     {
         var user = await _userRepository.GetByEmailAsync(registerDto.Email);
@@ -46,7 +46,7 @@ public class AuthService : IAuthService
             UpdatedAt = TimeHelper.GetDateTime(),
             LastActivity = TimeHelper.GetDateTime(),
             IdentityRole = Domain.Enums.IdentityRole.Admin,
-    };
+        };
 
         var dbResult = await _userRepository.CreateAsync(user);
         return dbResult > 0;
@@ -78,34 +78,48 @@ public class AuthService : IAuthService
         return dbResult > 0;
     }
 
-    private async Task<int> VerificationCodeAsync(string email)
+    public async Task<bool> SendVerificationCodeAsync(string email)
     {
-        string to, from, pass, mail;
+        var user = await _userRepository.GetByEmailAsync(email);
+        if (user is null) throw new UserNotFoundException();
 
-        to = email;
-        from = "";
-        pass = "";
-        mail = RandomVerificationCodeAsync().ToString();
+        int code = new Random().Next(MIN_VERIFICATION_CODE, 9999);
 
-        MailMessage mailMessage = new MailMessage();
-        mailMessage.To.Add(to);
-        mailMessage.From = new MailAddress(from);
-        mailMessage.Subject = "BARAKA SAVDO - Verification Code";
-
-        SmtpClient smtpClient = new SmtpClient("smtp.gmail.com");
-        smtpClient.EnableSsl = true;
-        smtpClient.Port = 587;
-        smtpClient.DeliveryMethod = SmtpDeliveryMethod.Network;
-        smtpClient.Credentials = new NetworkCredential(from, pass);
-
-
-        return 0;
+        var dbResult = await _userRepository.UpdateAsync(user.Id, user);
+        if (dbResult > 0)
+        {
+            await SendEmailAsync(email, code);
+            return true;
+        }
+        return false;
     }
 
-    private int RandomVerificationCodeAsync()
+    private async Task SendEmailAsync(string email, int code)
     {
-        var random = new Random();
-        int randomNumber = random.Next(10000, 99999);
-        return randomNumber;
+        var fromAddress = new MailAddress("bahriddinabdusalomov7@gmail.com");
+        var toAddress = new MailAddress(email);
+        const string fromPassword = "bahriddin6669";
+        const string subject = "Verification Code";
+        string body = $"Your verification code is {code}";
+
+        var smtp = new SmtpClient
+        {
+            Host = "smtp.gmail.com",
+            Port = 587,
+            EnableSsl = true,
+            DeliveryMethod = SmtpDeliveryMethod.Network,
+            UseDefaultCredentials = false,
+            Credentials = new NetworkCredential(fromAddress.Address, fromPassword)
+        };
+
+        smtp.EnableSsl = false;
+        
+        using var message = new MailMessage(fromAddress, toAddress)
+        {
+            Subject = subject,
+            Body = body
+        };
+        await smtp.SendMailAsync(message);
     }
+
 }
