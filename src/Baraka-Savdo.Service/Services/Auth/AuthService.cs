@@ -7,6 +7,8 @@ using Baraka_Savdo.Service.Common.Security;
 using Baraka_Savdo.Service.Dtos.Auth;
 using Baraka_Savdo.Service.Interfaces.Auth;
 
+using Microsoft.Extensions.Configuration;
+
 using System.Net;
 using System.Net.Mail;
 
@@ -16,14 +18,17 @@ public class AuthService : IAuthService
 {
     private readonly IUserRepository _userRepository;
     private readonly ITokenService _tokenService;
+    private readonly IConfiguration _configuration;
     private readonly int MIN_VERIFICATION_CODE = 1000;
 
     public AuthService(
         IUserRepository userRepository,
-        ITokenService tokenService)
+        ITokenService tokenService,
+        IConfiguration configuration)
     {
         this._userRepository = userRepository;
         this._tokenService = tokenService;
+        this._configuration = configuration;
     }
 
     public async Task<bool> RegisterAsync(RegisterDto registerDto)
@@ -70,9 +75,12 @@ public class AuthService : IAuthService
         if (user is null) throw new UserNotFoundException();
 
         string salt = Guid.NewGuid().ToString();
-
-        user.Salt = salt;
-        user.PasswordHash = PasswordHasher.HashPassword(resetPasswordDto.Password, salt);
+        var lamp = SendVerificationCodeAsync(resetPasswordDto.Email).Result;
+        if (lamp == true)
+        {
+            user.Salt = salt;
+            user.PasswordHash = PasswordHasher.HashPassword(resetPasswordDto.Password, salt);
+        }
 
         var dbResult = await _userRepository.UpdateAsync(user.Id, user);
         return dbResult > 0;
@@ -85,41 +93,33 @@ public class AuthService : IAuthService
 
         int code = new Random().Next(MIN_VERIFICATION_CODE, 9999);
 
-        var dbResult = await _userRepository.UpdateAsync(user.Id, user);
-        if (dbResult > 0)
-        {
-            await SendEmailAsync(email, code);
-            return true;
-        }
-        return false;
+        await SendEmailAsync(email, code);
+        
+        return true;
     }
 
     private async Task SendEmailAsync(string email, int code)
     {
-        var fromAddress = new MailAddress("bahriddinabdusalomov7@gmail.com");
-        var toAddress = new MailAddress(email);
-        const string fromPassword = "bahriddin6669";
-        const string subject = "Verification Code";
-        string body = $"Your verification code is {code}";
-
-        var smtp = new SmtpClient
+        var emailSettings = _configuration.GetSection("EmailSettings");
+        var mailMessage = new MailMessage
         {
-            Host = "smtp.gmail.com",
-            Port = 587,
-            EnableSsl = true,
+            From = new MailAddress(emailSettings["Sender"], emailSettings["SenderName"]),
+            Subject = "Verification Code",
+            Body = $"Your verification code is {code}",
+            IsBodyHtml = true,
+        };
+
+        mailMessage.To.Add(email);
+
+        using var smtp = new SmtpClient(emailSettings["MailServer"], int.Parse(emailSettings["MailPort"]))
+        {
+            Port = int.Parse(emailSettings["MailPort"]),
             DeliveryMethod = SmtpDeliveryMethod.Network,
-            UseDefaultCredentials = false,
-            Credentials = new NetworkCredential(fromAddress.Address, fromPassword)
+            Credentials = new NetworkCredential(emailSettings["Sender"], emailSettings["Password"]),
+            EnableSsl = true,
         };
 
-        smtp.EnableSsl = false;
-        
-        using var message = new MailMessage(fromAddress, toAddress)
-        {
-            Subject = subject,
-            Body = body
-        };
-        await smtp.SendMailAsync(message);
+        await smtp.SendMailAsync(mailMessage);
     }
 
 }
