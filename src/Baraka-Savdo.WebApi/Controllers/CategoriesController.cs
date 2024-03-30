@@ -42,6 +42,5 @@ namespace Baraka_Savdo.WebApi.Controllers
         [HttpDelete("{categoryId}")]
         public async Task<ActionResult> DeleteAsync(long categoryId) 
             => Ok(await _service.DeleteAsync(categoryId));
-        
     }
 }
