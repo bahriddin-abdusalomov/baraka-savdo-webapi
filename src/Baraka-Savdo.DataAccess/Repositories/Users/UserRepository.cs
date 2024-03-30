@@ -169,7 +169,7 @@ public class UserRepository : BaseRepository, IUserRepository
                      "SET first_name = @FirstName, " +
                      "    last_name = @LastName, " +
                      "    phone_number = @PhoneNumber, " +
-                     "    phone_number_confirmed = @PhoneNumberConfirmed, " +
+                     //"    phone_number_confirmed = @PhoneNumberConfirmed, " +
                      "    passport_seria_number = @PassportSeriaNumber, " +
                      "    is_male = @IsMale, " +
                      "    birth_date = @BirthDate, " +
