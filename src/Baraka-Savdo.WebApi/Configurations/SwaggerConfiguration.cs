@@ -16,10 +16,10 @@ public static class SwaggerConfiguration
 
             options.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
             {
-                In = ParameterLocation.Header,
-                Description = "Bearer {token}",
+                Scheme = "Bearer",
                 Name = "Authorization",
-                Type = SecuritySchemeType.ApiKey
+                Type = SecuritySchemeType.Http,
+                BearerFormat = "JWT",
             });
 
             options.AddSecurityRequirement(new OpenApiSecurityRequirement {
