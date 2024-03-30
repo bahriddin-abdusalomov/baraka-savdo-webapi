@@ -6,9 +6,8 @@ using Baraka_Savdo.Service.Common.Helpers;
 using Baraka_Savdo.Service.Common.Security;
 using Baraka_Savdo.Service.Dtos.Auth;
 using Baraka_Savdo.Service.Interfaces.Auth;
-
+using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.Configuration;
-
 using System.Net;
 using System.Net.Mail;
 
@@ -19,16 +18,22 @@ public class AuthService : IAuthService
     private readonly IUserRepository _userRepository;
     private readonly ITokenService _tokenService;
     private readonly IConfiguration _configuration;
-    private readonly int MIN_VERIFICATION_CODE = 1000;
+    private readonly IHttpContextAccessor _httpContextAccessor;
+    private readonly IMemoryCache _memoryCache;
+    private readonly int MIN_VERIFICATION_CODE = 100000;
 
     public AuthService(
         IUserRepository userRepository,
         ITokenService tokenService,
-        IConfiguration configuration)
+        IConfiguration configuration,
+        IMemoryCache memoryCache,
+        IHttpContextAccessor httpContextAccessor)
     {
         this._userRepository = userRepository;
         this._tokenService = tokenService;
         this._configuration = configuration;
+        _memoryCache = memoryCache;
+        _httpContextAccessor = httpContextAccessor;
     }
 
     public async Task<bool> RegisterAsync(RegisterDto registerDto)
@@ -71,15 +76,16 @@ public class AuthService : IAuthService
 
     public async Task<bool> ResetPasswordAsync(ResetPasswordDto resetPasswordDto)
     {
-        var user = await _userRepository.GetByEmailAsync(resetPasswordDto.Email);
+        var id = _httpContextAccessor.HttpContext.User.FindFirst("Id").Value;
+       
+        var user = await _userRepository.GetByIdAsync(long.Parse(id));
         if (user is null) throw new UserNotFoundException();
 
         string salt = Guid.NewGuid().ToString();
-        var lamp = SendVerificationCodeAsync(resetPasswordDto.Email).Result;
-        if (lamp == true)
+        if (resetPasswordDto.NewPassword == resetPasswordDto.ConfirmPassword)
         {
             user.Salt = salt;
-            user.PasswordHash = PasswordHasher.HashPassword(resetPasswordDto.Password, salt);
+            user.PasswordHash = PasswordHasher.HashPassword(resetPasswordDto.NewPassword, salt);
         }
 
         var dbResult = await _userRepository.UpdateAsync(user.Id, user);
@@ -91,10 +97,20 @@ public class AuthService : IAuthService
         var user = await _userRepository.GetByEmailAsync(email);
         if (user is null) throw new UserNotFoundException();
 
-        int code = new Random().Next(MIN_VERIFICATION_CODE, 9999);
+        int code = new Random().Next(MIN_VERIFICATION_CODE, 999999);
 
+        _memoryCache.Set(code,email);
+        var eemail = _memoryCache.Get(code) as string;
         await SendEmailAsync(email, code);
         
+        return true;
+    }
+
+    public async Task<bool> EmailComfirmationCodeAsync(int code)
+    {
+        var email = _memoryCache.Get(code) as string;
+       
+        if(email is null) return false;
         return true;
     }
 
