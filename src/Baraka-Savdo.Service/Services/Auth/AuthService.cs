@@ -1,13 +1,19 @@
 ﻿using Baraka_Savdo.DataAccess.Interfaces.Users;
 using Baraka_Savdo.Domain.Entities.Users;
+using Baraka_Savdo.Domain.Exceptions;
 using Baraka_Savdo.Domain.Exceptions.Password;
 using Baraka_Savdo.Domain.Exceptions.Users;
 using Baraka_Savdo.Service.Common.Helpers;
 using Baraka_Savdo.Service.Common.Security;
 using Baraka_Savdo.Service.Dtos.Auth;
 using Baraka_Savdo.Service.Interfaces.Auth;
+
+using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Options;
+using Microsoft.IdentityModel.Tokens;
+
 using System.Net;
 using System.Net.Mail;
 
@@ -76,7 +82,7 @@ public class AuthService : IAuthService
 
     public async Task<bool> ResetPasswordAsync(ResetPasswordDto resetPasswordDto)
     {
-        var id = _httpContextAccessor.HttpContext.User.FindFirst("Id").Value;
+        var id = _httpContextAccessor.HttpContext.Request.Cookies["id"];
        
         var user = await _userRepository.GetByIdAsync(long.Parse(id));
         if (user is null) throw new UserNotFoundException();
@@ -92,25 +98,28 @@ public class AuthService : IAuthService
         return dbResult > 0;
     }
 
-    public async Task<bool> SendVerificationCodeAsync(string email)
+    public async Task<bool> SendVerificationCodeAsync(EmailDto dto)
     {
-        var user = await _userRepository.GetByEmailAsync(email);
+        var user = await _userRepository.GetByEmailAsync(dto.Email);
         if (user is null) throw new UserNotFoundException();
 
+        //  _httpContextAccessor.HttpContext.Response.Cookies.Append("id", user.Id.ToString(), new CookieOptions { HttpOnly = true, SameSite = SameSiteMode.None, Secure = true, MaxAge = TimeSpan.FromMinutes(5) });
+
+        _httpContextAccessor.HttpContext.Response.Cookies.Append("UserId", user.Id.ToString());
         int code = new Random().Next(MIN_VERIFICATION_CODE, 999999);
 
-        _memoryCache.Set(code,email);
+        _memoryCache.Set(code,dto.Email);
         var eemail = _memoryCache.Get(code) as string;
-        await SendEmailAsync(email, code);
+        await SendEmailAsync(dto.Email, code);
         
         return true;
     }
 
-    public async Task<bool> EmailComfirmationCodeAsync(int code)
+    public async Task<bool> EmailComfirmationCodeAsync(CodeDto dto)
     {
-        var email = _memoryCache.Get(code) as string;
+        var email = _memoryCache.Get(dto.Code) as string;
        
-        if(email is null) return false;
+        if(email.IsNullOrEmpty()) throw new NotFoundException();
         return true;
     }
 

@@ -30,20 +30,23 @@ public class AuthorizationController : ControllerBase
     public async Task<IActionResult> LoginAsync(LoginDto loginDto)
     {
         var result = await _authService.LoginAsync(loginDto);
+
+        var response = new { token = result };
+       
+        return Ok(response);
+    }
+
+    [HttpPost]
+    public async Task<IActionResult> SendVerificationCodeAsync(EmailDto dto)
+    {
+        var result = await _authService.SendVerificationCodeAsync(dto);
         return Ok(result);
     }
 
     [HttpPost]
-    public async Task<IActionResult> SendVerificationCodeAsync(string email)
+    public async Task<IActionResult> EmailConfirmationCodeAsync(CodeDto dto)
     {
-        var result = await _authService.SendVerificationCodeAsync(email);
-        return Ok(result);
-    }
-
-    [HttpPost]
-    public async Task<IActionResult> EmailComfirmationCodeAsync(int code)
-    {
-        var result = await _authService.EmailComfirmationCodeAsync(code);
+        var result = await _authService.EmailComfirmationCodeAsync(dto);
         return Ok(result);
     }
 

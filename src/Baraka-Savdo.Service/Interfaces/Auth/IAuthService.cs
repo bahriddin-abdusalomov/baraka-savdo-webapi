@@ -7,6 +7,6 @@ public interface IAuthService
     public Task<bool> RegisterAsync(RegisterDto registerDto);
     public Task<string> LoginAsync(LoginDto loginDto);
     public Task<bool> ResetPasswordAsync(ResetPasswordDto resetPasswordDto);
-    public Task<bool> SendVerificationCodeAsync(string email);
-    public Task<bool> EmailComfirmationCodeAsync(int code);
+    public Task<bool> SendVerificationCodeAsync(EmailDto dto);
+    public Task<bool> EmailComfirmationCodeAsync(CodeDto dto);
 }
